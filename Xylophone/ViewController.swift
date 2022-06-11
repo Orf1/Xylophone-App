@@ -10,11 +10,21 @@ class ViewController: UIViewController {
     }
 
     @IBAction func keyPressed(_ sender: UIButton) {
-        playSound()
+        if let unwrapped = sender.currentTitle {
+            playSound(soundName: unwrapped)
+            sender.alpha = 0.5
+            print("Start")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                sender.alpha = 1
+                print("End")
+            }
+        } else {
+            print("Missing name.")
+        }
     }
     
-    func playSound() {
-        let url = Bundle.main.url(forResource: "C", withExtension: "wav")
+    func playSound(soundName: String) {
+        let url = Bundle.main.url(forResource: soundName, withExtension: "wav")
         player = try! AVAudioPlayer(contentsOf: url!)
         player.play()
                 
